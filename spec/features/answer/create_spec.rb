@@ -19,12 +19,14 @@ feature "User can create an answer for a question", %q{
       fill_in "Body", with: "The answer on the question"
       click_on "Answer"
 
-      expect(page).to have_content "The answer on the question"
+      within ".answers" do
+        expect(page).to have_content "The answer on the question"
+      end
     end
 
     scenario "tries create an answer with errors" do
       click_on "Answer"
-      
+
       expect(page).to have_content "Body can't be blank"
     end
   end
