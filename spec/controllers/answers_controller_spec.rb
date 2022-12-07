@@ -55,7 +55,7 @@ RSpec.describe AnswersController, type: :controller do
 
       it "redirects to show view" do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }, format: :js
-        
+
         expect(response).to render_template :create
       end
     end
@@ -78,35 +78,35 @@ RSpec.describe AnswersController, type: :controller do
 
     context "with valid attributes" do
       it "assigns requested aswer to @answer" do
-        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }
+        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js
 
         expect(assigns(:answer)).to eq answer
       end
 
       it "changes answer attributes" do
-        patch :update, params: { id: answer, user: user, answer: { body: "new body" } }
+        patch :update, params: { id: answer, user: user, answer: { body: "new body" } }, format: :js
         answer.reload
 
         expect(answer.body).to eq "new body"
       end
 
       it "redirects to updated answer" do
-        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }
+        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }, format: :js
 
-        expect(response).to redirect_to answer
+        expect(response).to render_template :update
       end
     end
 
     context "with invalid attributes" do
       it "does not change question attributes" do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
 
         expect(answer.body).to eq "MyAnswer"
       end
       it "re-renders edit view" do
-        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }
+        patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }, format: :js
 
-        expect(response).to render_template :edit
+        expect(response).to render_template :update
       end
     end
   end
