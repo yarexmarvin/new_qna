@@ -28,6 +28,7 @@ gem 'jbuilder', '~> 2.7'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.4', require: false
 gem 'slim-rails'
+gem 'devise'
 
 
 group :development, :test do
@@ -55,6 +56,7 @@ group :test do
   gem 'selenium-webdriver', '>= 4.0.0.rc1'
   gem 'rails-controller-testing'
   gem 'shoulda-matchers', '~> 5.0'
+  gem 'launchy'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers'
 end

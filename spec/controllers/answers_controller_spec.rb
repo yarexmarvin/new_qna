@@ -1,8 +1,9 @@
 require "rails_helper"
 
 RSpec.describe AnswersController, type: :controller do
-  let(:question) { create(:question) }
-  let(:answer) { create(:answer) }
+  let(:user) { create(:user) }
+  let(:question) { create(:question, user: user) }
+  let(:answer) { create(:answer, question: question, user: user) }
 
   describe "GET #show" do
     before { get :show, params: { id: answer } }
@@ -17,6 +18,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #new" do
+    before { login(user) }
+
     before { get :new, params: { question_id: question } }
 
     it "assigns a new Answer to @answer" do
@@ -29,6 +32,8 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "GET #edit" do
+    before { login(user) }
+
     before { get :edit, params: { id: answer } }
 
     it "assigns the requested to answer to @answer" do
@@ -41,47 +46,52 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "POST #create" do
+    before { login(user) }
+
     context "with valid attributes" do
       it "saves a new answer in database" do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
+        expect { post :create, params: { question_id: question, user: user, answer: attributes_for(:answer) } }.to change(question.answers, :count).by(1)
       end
 
       it "redirects to show view" do
         post :create, params: { question_id: question, answer: attributes_for(:answer) }
-
-        expect(response).to redirect_to assigns(:answer)
+        
+        expect(response).to redirect_to assigns(:question)
       end
     end
 
     context "with invalid attributes" do
       it "does not save a new answer in database" do
-        expect { post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) } }.to_not change(question.answers, :count)
+        expect { post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid) } }.to_not change(question.answers, :count)
       end
 
       it "re-renders new view" do
-        post :create, params: { question_id: question, answer: attributes_for(:answer, :invalid) }
+        post :create, params: { question_id: question, user: user, answer: attributes_for(:answer, :invalid) }
 
-        expect(response).to render_template :new
+        expect(response).to render_template "questions/show"
       end
     end
   end
+
   describe "PATCH #update" do
+    before { login(user) }
+
     context "with valid attributes" do
       it "assigns requested aswer to @answer" do
-        patch :update, params: { id: answer, answer: attributes_for(:answer) }
+        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }
 
         expect(assigns(:answer)).to eq answer
       end
 
       it "changes answer attributes" do
-        patch :update, params: { id: answer, answer: { body: "new body" } }
+        patch :update, params: { id: answer, user: user, answer: { body: "new body" } }
         answer.reload
 
         expect(answer.body).to eq "new body"
       end
 
       it "redirects to updated answer" do
-        patch :update, params: { id: answer, answer: attributes_for(:answer) }
+        patch :update, params: { id: answer, user: user, answer: attributes_for(:answer) }
 
         expect(response).to redirect_to answer
       end
@@ -91,7 +101,7 @@ RSpec.describe AnswersController, type: :controller do
       it "does not change question attributes" do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }
 
-        expect(answer.body).to eq "MyText"
+        expect(answer.body).to eq "MyAnswer"
       end
       it "re-renders edit view" do
         patch :update, params: { id: answer, answer: attributes_for(:answer, :invalid) }
@@ -102,7 +112,9 @@ RSpec.describe AnswersController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    let!(:answer) { create(:answer) }
+    before { login(user) }
+
+    let!(:answer) { create(:answer, question: question, user: user) }
 
     it "deletes the answer" do
       expect { delete :destroy, params: { id: answer } }.to change(Answer, :count).by(-1)
