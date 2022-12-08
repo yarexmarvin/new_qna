@@ -1,7 +1,7 @@
 .answer class=["answer-id-#{answer.id}"]
   p= answer.body
   - if current_user&.author_of?(answer)
-    = link_to 'Delete', answer_path(answer), method: :delete
+    = link_to 'Delete', answer_path(answer), remote: true, method: :delete
     = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
   div class=["answer-error-#{answer.id}"]

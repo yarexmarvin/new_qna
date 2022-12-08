@@ -9,7 +9,8 @@ import $ from 'jquery';
 import Turbolinks from "turbolinks";
 import * as ActiveStorage from "@rails/activestorage";
 import "channels";
-import '../answer/edit'
+import '../answers/edit'
+import '../questions/edit'
 
 global.$ = jQuery;
 Rails.start();
