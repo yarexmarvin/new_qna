@@ -1,6 +1,6 @@
 class AnswersController < ApplicationController
-  before_action :authenticate_user!, except: %i[index show]
-  before_action :find_answer, only: %i[show edit update destroy]
+  before_action :authenticate_user!, except: %i[index show best]
+  before_action :find_answer, only: %i[show edit update destroy best]
   before_action :find_question, only: %i[new create]
 
   def show; end
@@ -22,9 +22,15 @@ class AnswersController < ApplicationController
     @answer.update(answer_params)
   end
 
+  def best
+    @question = @answer.question
+    @answer.set_the_best if current_user.author_of?(@question)
+  end
+
   def destroy
     @answer.destroy
   end
+
 
   private
 
@@ -37,6 +43,9 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
+    '==========================='
+    p params
+    '==========================='
     @answer = Answer.find(params[:id])
   end
 end

@@ -1,13 +1,17 @@
-.answer class=["answer-id-#{answer.id}"]
-  p= answer.body
+- if answer.persisted?
+  .answer class=["answer-id-#{answer.id}" " #{answer.best? ? 'the-best-answer' : ''}"]
+    p= answer.body
+    - if current_user&.author_of?(answer)
+      = link_to 'Delete', answer_path(answer), remote: true, method: :delete
+      = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
+
+    - if current_user&.author_of?(answer.question) && !answer.best? 
+        = link_to 'The Best Answer', best_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'
+
+    div class=["answer-error-#{answer.id}"]
+
   - if current_user&.author_of?(answer)
-    = link_to 'Delete', answer_path(answer), remote: true, method: :delete
-    = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
-
-  div class=["answer-error-#{answer.id}"]
-
-- if current_user&.author_of?(answer)
-  = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false  do |f|
-    = f.label :body
-    = f.text_area :body
-    = f.submit 'Save'
+    = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false  do |f|
+      = f.label :body
+      = f.text_area :body
+      = f.submit 'Save'

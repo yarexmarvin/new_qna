@@ -9,4 +9,5 @@ class User < ApplicationRecord
   def author_of?(subject)
     self.id == subject.user_id
   end
+
 end
