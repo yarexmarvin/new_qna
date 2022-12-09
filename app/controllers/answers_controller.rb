@@ -43,9 +43,6 @@ class AnswersController < ApplicationController
   end
 
   def find_answer
-    '==========================='
-    p params
-    '==========================='
     @answer = Answer.find(params[:id])
   end
 end
