@@ -13,7 +13,7 @@ feature "User can delete a question", %q{
   describe "Authenticated user" do
     scenario "delete his question" do
       sign_in(user1)
-      visit questions_path
+      visit question_path(question)
       click_on "Delete"
 
       expect(page).to_not have_content question.title
@@ -22,14 +22,14 @@ feature "User can delete a question", %q{
 
     scenario "tries to delete questions from other people" do
       sign_in(user2)
-      visit questions_path
+      visit question_path(question)
 
       expect(page).to_not have_content "Delete"
     end
   end
 
   scenario "Unauthenticated user tries to delete any question" do
-    visit questions_path
+    visit question_path(question)
 
     expect(page).to_not have_content "Delete"
   end

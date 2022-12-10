@@ -1,5 +1,32 @@
-p= question.title
+.question
+  h1= 'Question'
+  .q-title
+    h5= question.title
+  .q-body
+    p= question.body
+  -if question.files.attached?
+    - question.files.each do |file|
+      .attachment data-file-id="#{file.id}"
+        p= link_to file.filename.to_s, url_for(file)
+        - if current_user&.author_of?(question)
+          = link_to 'delete file',  attachment_path(file), method: :delete, remote: true
+    end
 
-- if current_user&.author_of?(question)
-  = link_to 'Delete question', question_path(question), method: :delete 
+  div class=["question-error-#{question.id}"]
+
+  - if current_user&.author_of?(question)
+    = link_to 'Edit Question', '#', class: 'edit-question-link', data: { question_id: question.id }
+    = link_to 'Delete question', question_path(question), method: :delete 
+
+  
+  - if current_user&.author_of?(question)
+    = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" }, local: false  do |f|
+      = f.label :title
+      = f.text_area :title
+      = f.label :body
+      = f.text_area :body
+      = f.label :files
+      = f.file_field :files, multiple: true, direct_upload: true
+      = f.submit 'Save'
+
 

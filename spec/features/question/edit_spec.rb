@@ -29,6 +29,19 @@ feature "User can edit his question", %q{
         expect(page).to_not have_selector "textarea"
       end
     end
+    scenario "edits a question with an attached file" do
+      within ".question" do
+        click_on "Edit Question"
+
+        fill_in "Title", with: "Test question"
+        fill_in "Body", with: "text text text"
+        attach_file "File", ["#{Rails.root}/spec/rails_helper.rb", "#{Rails.root}/spec/spec_helper.rb"]
+
+        click_on "Save"
+      end
+      expect(page).to have_link "rails_helper.rb"
+      expect(page).to have_link "spec_helper.rb"
+    end
     scenario "edits his question with error" do
       within ".question" do
         click_on "Edit Question"
