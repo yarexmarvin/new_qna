@@ -33,7 +33,7 @@ gem 'devise'
 gem "aws-sdk-s3", require: false
 gem 'dotenv-rails'
 gem 'rack-cors'
-
+gem "image_processing"
 
 
 
