@@ -3,11 +3,16 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs"
-import Turbolinks from "turbolinks"
-import * as ActiveStorage from "@rails/activestorage"
-import "channels"
+import Rails from "@rails/ujs";
+require("jquery")
+import $ from 'jquery';
+import Turbolinks from "turbolinks";
+import * as ActiveStorage from "@rails/activestorage";
+import "channels";
+import '../answers/edit'
+import '../questions/edit'
 
-Rails.start()
-Turbolinks.start()
-ActiveStorage.start()
+global.$ = jQuery;
+Rails.start();
+Turbolinks.start();
+ActiveStorage.start();

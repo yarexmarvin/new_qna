@@ -1,0 +1,14 @@
+.question-container
+  = render @question
+  
+.answer-errors
+  = render 'shared/errors', resource: @answer
+
+
+- unless @question.answers.empty?
+  .answers
+    = render @question.answers
+
+-if current_user.present?
+  =render 'answers/form' 
+  
