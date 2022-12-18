@@ -3,8 +3,9 @@
 // a relevant structure within app/javascript and only use these pack files to reference
 // that code so it'll be compiled.
 
-import Rails from "@rails/ujs";
 require("jquery")
+require("@nathanvda/cocoon")
+import Rails from "@rails/ujs";
 import $ from 'jquery';
 import Turbolinks from "turbolinks";
 import * as ActiveStorage from "@rails/activestorage";
@@ -12,7 +13,16 @@ import "channels";
 import '../answers/edit'
 import '../questions/edit'
 
+const GistClient = require("gist-client")
+
+const gistClient = new GistClient()
+
+console.log(gistClient)
+
+
 global.$ = jQuery;
 Rails.start();
 Turbolinks.start();
 ActiveStorage.start();
+window.gistClient = gistClient;
+

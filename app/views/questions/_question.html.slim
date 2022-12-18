@@ -14,6 +14,12 @@
 
   div class=["question-error-#{question.id}"]
 
+  - if !question.links.empty?
+    .links   
+      - question.links.each do |link|
+        = render link
+      end
+
   - if current_user&.author_of?(question)
     = link_to 'Edit Question', '#', class: 'edit-question-link', data: { question_id: question.id }
     = link_to 'Delete question', question_path(question), method: :delete 
@@ -21,12 +27,22 @@
   
   - if current_user&.author_of?(question)
     = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" }, local: false  do |f|
-      = f.label :title
-      = f.text_area :title
-      = f.label :body
-      = f.text_area :body
-      = f.label :files
-      = f.file_field :files, multiple: true, direct_upload: true
-      = f.submit 'Save'
+        p
+          = f.label :title, 'Title'
+          = f.text_field :title
+        p  
+          = f.label :body, 'Body'
+          = f.text_area :body
+        p
+          = f.label :files
+          = f.file_field :files, multiple: true
+        
+        p
+          = f.fields_for :links do |link|
+
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+        p
+          = f.submit 'Save'
 
 

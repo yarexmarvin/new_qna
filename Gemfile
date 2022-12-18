@@ -32,10 +32,10 @@ gem 'devise'
 
 gem "aws-sdk-s3", require: false
 gem 'dotenv-rails'
-gem 'rack-cors'
-gem "image_processing"
 
-
+gem 'cocoon'
+gem 'validate_url'
+gem 'octokit'
 
 
 group :development, :test do
