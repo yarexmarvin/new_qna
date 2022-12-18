@@ -1,0 +1,20 @@
+
+-if link.linkable.links
+  li.mb-3 data-link-id=link.id
+    = link_to link.name, link.url, class: 'btn btn-link m-3'
+
+    - if link.gist?
+      span data-gist-id=link.id
+      javascript:
+         gistClient
+              .setToken("#{ENV['GITHUB_TOKEN']}")
+              .getOneById("#{link.gist_id}")
+              .then(response => {
+                  for (let file in response.files) {
+                      let current = document.querySelector('[data-gist-id="#{link.id}"]')
+                      console.log(response)
+                      current.innerText = response.files[file].content
+                  }
+              }).catch(err => console.log(err))
+    - if current_user&.author_of?(link.linkable)
+      = link_to 'Delete link', link_path(link), method: :delete, remote: true
