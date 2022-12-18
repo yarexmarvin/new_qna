@@ -19,6 +19,9 @@
       - question.links.each do |link|
         = render link
       end
+  - if @question.award.present?
+      h3 Award:
+      = image_tag url_for(@question.award.image)
 
   - if current_user&.author_of?(question)
     = link_to 'Edit Question', '#', class: 'edit-question-link', data: { question_id: question.id }
