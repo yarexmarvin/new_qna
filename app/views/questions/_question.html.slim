@@ -1,4 +1,4 @@
-.question
+.question class=["question-id-#{@question.id}"]
   h1= 'Question'
   .q-title
     h5= question.title
@@ -11,6 +11,8 @@
         - if current_user&.author_of?(question)
           = link_to 'delete file',  attachment_path(file), method: :delete, remote: true
     end
+
+  = render partial: 'votes/vote', locals: { votable: @question }
 
   div class=["question-error-#{question.id}"]
 

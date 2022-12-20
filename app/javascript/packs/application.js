@@ -11,14 +11,13 @@ import Turbolinks from "turbolinks";
 import * as ActiveStorage from "@rails/activestorage";
 import "channels";
 import '../answers/edit'
+import '../answers/create'
 import '../questions/edit'
+import '../votes/vote'
 
 const GistClient = require("gist-client")
 
 const gistClient = new GistClient()
-
-console.log(gistClient)
-
 
 global.$ = jQuery;
 Rails.start();

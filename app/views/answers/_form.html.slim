@@ -2,7 +2,7 @@
   .answer-errors
     = render 'shared/errors', resource: @answer
     
-  = form_with model: [@question, @answer], local: false, class: 'new-answer' do |f|
+  = form_with model: [@question, @answer], data: { type: :json }, local: false, class: 'new-answer' do |f|
     p
       = f.label :body, 'Body'
       = f.text_area :body

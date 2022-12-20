@@ -12,7 +12,6 @@
               .then(response => {
                   for (let file in response.files) {
                       let current = document.querySelector('[data-gist-id="#{link.id}"]')
-                      console.log(response)
                       current.innerText = response.files[file].content
                   }
               }).catch(err => console.log(err))
