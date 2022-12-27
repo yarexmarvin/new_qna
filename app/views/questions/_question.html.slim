@@ -1,0 +1,53 @@
+.question class=["question-id-#{@question.id}"]
+  h1= 'Question'
+  .q-title
+    h5= question.title
+  .q-body
+    p= question.body
+  -if question.files.attached?
+    - question.files.each do |file|
+      .attachment data-file-id="#{file.id}"
+        p= link_to file.filename.to_s, url_for(file)
+        - if current_user&.author_of?(question)
+          = link_to 'delete file',  attachment_path(file), method: :delete, remote: true
+    end
+
+  = render partial: 'votes/vote', locals: { votable: @question }
+
+  div class=["question-error-#{question.id}"]
+
+  - if !question.links.empty?
+    .links   
+      - question.links.each do |link|
+        = render link
+      end
+  - if @question.award.present?
+      h3 Award:
+      = image_tag url_for(@question.award.image)
+
+  - if current_user&.author_of?(question)
+    = link_to 'Edit Question', '#', class: 'edit-question-link', data: { question_id: question.id }
+    = link_to 'Delete question', question_path(question), method: :delete 
+
+  
+  - if current_user&.author_of?(question)
+    = form_with model: question, class: 'hidden', html: { id: "edit-question-#{question.id}" }, local: false  do |f|
+        p
+          = f.label :title, 'Title'
+          = f.text_field :title
+        p  
+          = f.label :body, 'Body'
+          = f.text_area :body
+        p
+          = f.label :files
+          = f.file_field :files, multiple: true
+        
+        p
+          = f.fields_for :links do |link|
+
+          .links
+            = link_to_add_association 'add link', f, :links, partial: 'links/link_fields'
+        p
+          = f.submit 'Save'
+
+

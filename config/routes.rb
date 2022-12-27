@@ -1,6 +1,25 @@
 Rails.application.routes.draw do
-  resources :questions, shallow: true do
-    resources :answers, shallow: true, except: :index
+  root to: "questions#index"
+  
+  devise_for :users
+
+  concern :votable do
+    member do
+      post :like
+      post :dislike
+    end
   end
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+
+  resources :questions, shallow: true, concerns: [:votable] do
+    resources :answers, shallow: true, except: :index, concerns: [:votable] do
+      member do
+        patch :best
+      end
+    end
+  end
+  
+  resources :attachments, only: :destroy
+  resources :links, only: :destroy
+  resources :awards, only: :index
+
 end

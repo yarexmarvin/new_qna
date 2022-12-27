@@ -1,0 +1,10 @@
+h4 Awards:
+- unless @awards.empty?
+  - @awards.each do |award|
+    p= "Question: #{award.question.title}"
+    p= "Award: #{award.title}"
+    - if award.image.attached?
+      p= image_tag award.image, size: "100x100"
+- else
+  p= 'you have no awards'
+  
