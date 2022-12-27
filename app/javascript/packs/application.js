@@ -14,6 +14,8 @@ import '../answers/edit'
 import '../answers/create'
 import '../questions/edit'
 import '../votes/vote'
+import createConsumer from "../channels/consumer";
+
 
 const GistClient = require("gist-client")
 

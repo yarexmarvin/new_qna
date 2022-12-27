@@ -36,6 +36,8 @@ gem 'dotenv-rails'
 gem 'cocoon'
 gem 'validate_url'
 gem 'octokit'
+gem 'gon'
+
 
 
 group :development, :test do

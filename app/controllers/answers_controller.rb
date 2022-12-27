@@ -4,6 +4,8 @@ class AnswersController < ApplicationController
   before_action :authenticate_user!, except: %i[index show best]
   before_action :find_answer, only: %i[show edit update destroy best]
   before_action :find_question, only: %i[new create]
+  after_action :publish_answer, only: :create
+
 
   def show; end
 
@@ -57,5 +59,18 @@ class AnswersController < ApplicationController
 
   def find_answer
     @answer = Answer.with_attached_files.find(params[:id])
+  end
+
+  def publish_answer
+    return if @answer.errors.any?
+    ActionCable.server.broadcast(
+      "questions/#{params[:question_id]}/answers",
+      {
+        partial: ApplicationController.render(
+          partial: "answers/answer",
+          locals: { answer: @answer, current_user: current_user}
+        )
+      }
+    )
   end
 end

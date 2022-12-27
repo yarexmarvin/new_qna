@@ -2,5 +2,5 @@ $('.question .question-error-<%= @question.id %>').html('<%= render 'shared/erro
 
 <% unless @question.errors.present? %>
   $('.question-container .question').remove();
-  $('.question-container').append('<%= j render @question %>');
+  $('.question-container').append("<%= j render 'question_part', resource: @question %>");
 <% end %>

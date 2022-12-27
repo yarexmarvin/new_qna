@@ -1,9 +1,8 @@
 .question-container
-  = render @question
+  = render 'question_part', resource: @question
   
 .answer-errors
   = render 'shared/errors', resource: @answer
-
 
 - unless @question.answers.empty?
   .answers
