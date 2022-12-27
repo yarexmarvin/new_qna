@@ -21,6 +21,7 @@ class AnswersController < ApplicationController
     respond_to do |format|
       if  @answer.save
         format.json { render json: @answer }
+        gon.push({current_user: current_user})
       else
         format.json do 
           render json: @answer.errors.full_messages, status: :unprocessable_entity
@@ -67,9 +68,10 @@ class AnswersController < ApplicationController
       "questions/#{params[:question_id]}/answers",
       {
         partial: ApplicationController.render(
-          partial: "answers/answer",
-          locals: { answer: @answer, current_user: current_user}
-        )
+          partial: "answers/answer_guest",
+          locals: { answer: @answer }
+        ), 
+        current_user: current_user
       }
     )
   end

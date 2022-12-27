@@ -1,0 +1,18 @@
+- if answer.persisted?
+  .answer class=["answer-id-#{answer.id}" " #{answer.best? ? 'the-best-answer' : ''}"]
+    p= answer.body
+
+    div class=["answer-error-#{answer.id}"]
+
+    -if answer.files.attached?
+      - answer.files.each do |file|
+        .attachment data-file-id="#{file.id}"
+          p= link_to file.filename.to_s, url_for(file)
+      end
+
+    h3 Comments:
+    .answer-comment data-comment-answer=answer.id
+      = render answer.comments
+
+          
+   

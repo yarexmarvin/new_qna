@@ -1,11 +1,11 @@
 - if answer.persisted?
   .answer class=["answer-id-#{answer.id}" " #{answer.best? ? 'the-best-answer' : ''}"]
     p= answer.body
-    - if current_user&.author_of?(answer)
+    - if current_user.present? && current_user&.author_of?(answer)
       = link_to 'Delete', answer_path(answer), remote: true, method: :delete
       = link_to 'Edit', '#', class: 'edit-answer-link', data: { answer_id: answer.id }
 
-    - if current_user&.author_of?(answer.question) && !answer.best? 
+    - if current_user.present? && current_user&.author_of?(answer.question) && !answer.best? 
         = link_to 'The Best Answer', best_answer_path(answer), remote: true, method: :patch, class: 'best-answer-link'
 
     = render partial: 'votes/vote', locals: { votable: answer, current_user: current_user }
@@ -22,7 +22,7 @@
       - answer.files.each do |file|
         .attachment data-file-id="#{file.id}"
           p= link_to file.filename.to_s, url_for(file)
-          - if current_user&.author_of?(answer)
+          - if current_user.present? && current_user&.author_of?(answer)
             = link_to 'delete file',  attachment_path(file), method: :delete, remote: true
       end
 
@@ -35,7 +35,7 @@
         =render 'comments/form', resource: answer
           
     .edit-answer
-      - if current_user&.author_of?(answer)
+      - if current_user.present? && current_user&.author_of?(answer)
         = form_with model: answer, class: 'hidden', html: { id: "edit-answer-#{answer.id}" }, local: false  do |f|
           p
             = f.label :body, 'Body'

@@ -15,5 +15,5 @@
                       current.innerText = response.files[file].content
                   }
               }).catch(err => console.log(err))
-    - if current_user&.author_of?(link.linkable)
+    - if current_user.present? && current_user&.author_of?(link.linkable)
       = link_to 'Delete link', link_path(link), method: :delete, remote: true
