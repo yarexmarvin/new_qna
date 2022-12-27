@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_12_20_055309) do
+ActiveRecord::Schema.define(version: 2022_12_27_120012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -64,6 +64,18 @@ ActiveRecord::Schema.define(version: 2022_12_20_055309) do
     t.index ["user_id"], name: "index_awards_on_user_id"
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.text "body", null: false
+    t.bigint "question_id"
+    t.bigint "answer_id"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["answer_id"], name: "index_comments_on_answer_id"
+    t.index ["question_id"], name: "index_comments_on_question_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
   create_table "links", force: :cascade do |t|
     t.string "name"
     t.string "url"
@@ -112,6 +124,9 @@ ActiveRecord::Schema.define(version: 2022_12_20_055309) do
   add_foreign_key "answers", "users"
   add_foreign_key "awards", "questions"
   add_foreign_key "awards", "users"
+  add_foreign_key "comments", "answers"
+  add_foreign_key "comments", "questions"
+  add_foreign_key "comments", "users"
   add_foreign_key "questions", "users"
   add_foreign_key "votes", "users"
 end

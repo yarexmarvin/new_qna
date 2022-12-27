@@ -26,7 +26,13 @@
             = link_to 'delete file',  attachment_path(file), method: :delete, remote: true
       end
 
-   
+    h3 Comments:
+    .answer-comment data-comment-answer=answer.id
+      = render answer.comments
+
+    - if current_user.present?
+      .comments-form
+        =render 'comments/form', resource: answer
           
     .edit-answer
       - if current_user&.author_of?(answer)
