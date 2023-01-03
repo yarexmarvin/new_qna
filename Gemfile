@@ -37,6 +37,12 @@ gem 'cocoon'
 gem 'validate_url'
 gem 'octokit'
 gem 'gon'
+gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-vkontakte'
+gem 'omniauth-rails_csrf_protection'
+
+
 
 
 
