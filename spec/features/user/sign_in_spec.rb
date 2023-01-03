@@ -24,4 +24,22 @@ feature "User can sign in", %q{
 
     expect(page).to have_content "Invalid Email or password."
   end
+
+  scenario 'User tries to sign up with oauth github' do
+    mock_auth :github, 'user@server.com'
+    click_on 'Sign in with GitHub'
+    expect(page).to have_content 'Successfully authenticated from Github account.'
+  end
+
+  scenario 'User tries to sign up with oauth vkontakte' do
+    mock_auth :vkontakte
+    click_on 'Sign in with Vkontakte'
+    fill_in 'Email', with: 'new@user.com'
+    click_on 'Send'
+    expect(page).to have_content 'Confirm your email by link on your email.'
+    sleep(1)
+    open_email 'new@user.com'
+    current_email.click_link 'Confirm your account'
+    expect(page).to have_content 'Your email address has been successfully confirmed.'
+  end
 end
