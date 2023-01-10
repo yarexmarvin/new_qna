@@ -6,16 +6,16 @@ class Services::FindForOauth
   end
 
   def call
-    authorization = Authorization.where(provider: auth.provider, uid: auth.uid.to_s).first
+    authorization = Authorization.find_by(provider: auth.provider, uid: auth.uid.to_s)
     return authorization&.user if authorization
 
     email = auth&.info&.email
     return unless email
 
     email = auth.info[:email]
-    user = User.where(email: email).first
+    user = User.find_by(email: email)
 
-    user = User.where(email: email).first
+    user = User.find_by(email: email)
     user ||= create_user(email)
     user.create_authorization(auth)
     user
